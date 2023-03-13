@@ -472,7 +472,7 @@ export default class Iphone extends Component {
 							<p className="sunrise-630am">Sunrise: 6:30am</p>
 							<p className="sunset-530pm">Sunset: 5:30pm</p>
 						</div>
-=					</div>
+					</div>
 				</div>
 		);
 		{/* end of Luciana code */ }
