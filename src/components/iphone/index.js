@@ -58,14 +58,14 @@ export default class Iphone extends Component {
 							style="height: 5%;
 						margin-top: 1%;">
 							<img
-								src="https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/k6fpuppe53f-1%3A36?alt=media&token=3f930cc0-d6b5-44f5-8518-ab8e990a466f"
+								src="../../assets/icons/menuicon.png"
 								id="icon-menu"
 								style="	width: 10%;
 								float: left;
 								padding-left: 5px;"
 							/>
 							<img
-								src="https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/k6fpuppe53f-1%3A33?alt=media&token=b3bc6d13-74a4-44c8-98c3-8af245d11c5f"
+								src="../../assets/icons/location-icon.png"
 								id="icon-location"
 								style="width: 3.6%;
 								position:relative;
