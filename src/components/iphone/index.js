@@ -12,39 +12,123 @@ import { round } from 'lodash';
 
 import Button from '../button';
 
+
 export default class Iphone extends Component {
-    
-    constructor(props) {
-        super(props);
-        this.state = {
-          location: '',
-          temperature: '',
-          sunrise: '',
-          sunset: '',
-          sunsetDate: '',
-          sunriseDate: '',
-          windspeed: '',
-          humidity: '',
-          uvindex: '',
-          cloudcoverage: '',
-          description: '',
-          forecast: []
-        };
-      }
-      
-      componentDidMount() {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
+  constructor(props) {
+    super(props);
+    this.state = {
+      location: '',
+      temperature: '',
+      sunrise: '',
+      sunset: '',
+      sunsetDate: '',
+      sunriseDate: '',
+      windspeed: '',
+      humidity: '',
+      uvindex: '',
+      cloudcoverage: '',
+      description: '',
+	  condition: '',
+	  bestTime: '',
+	  groundDryTime: '',
+      forecast: []
+    };
+  }
+
+  componentDidMount() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
             position => {
-              const { latitude, longitude } = position.coords;
-              const url = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;
-              const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;
-      
-              // Fetch current weather
-              fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                  this.setState({
+                const { latitude, longitude } = position.coords;
+                const url = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;
+                const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;
+
+                // Fetch current weather
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        this.setState({
+                            location: data.name,
+                            temperature: data.main.temp,
+                            sunrise: data.sys.sunrise,
+                            sunriseDate: new Date(data.sys.sunrise * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                            sunset: data.sys.sunset,
+                            sunsetDate: new Date(data.sys.sunset * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                            windspeed: data.wind.speed,
+                            humidity: data.main.humidity,
+                            uvindex: data.main.uvindex,
+                            cloudcoverage: data.clouds.all,
+                            description: data.weather[0].description,
+                            condition: data.weather[0].main,
+                        });
+                    })
+                    .catch(error => console.error(error));
+
+                // Fetch forecast
+                fetch(forecastUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        const forecast = data.list.slice(0, 5).map(item => ({
+                            time: new Date(item.dt_txt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                            temp: Math.round(item.main.temp),
+                            condition: item.weather[0].description,
+                            cloudCoverage: item.clouds.all
+                        }));
+                        this.setState({ forecast });
+                        const bestTime = this.findBestWalkingTime(forecast);
+                        console.log(bestTime); // or set to state or do whatever you want with it
+						this.estimateGroundDryTime(forecast);
+                    })
+                    .catch(error => console.error(error));
+            },
+            error => console.error(error)
+        );
+    }
+}
+
+
+findBestWalkingTime(forecast) {
+    let bestTime = forecast[0];
+    for (let i = 1; i < forecast.length; i++) {
+        if (forecast[i].temp > bestTime.temp && forecast[i].cloudCoverage < 50 && forecast[i].condition === "Clear") {
+            bestTime = forecast[i];
+        }
+    }
+    this.setState({ bestTime });
+    return bestTime;
+}
+
+estimateGroundDryTime(forecast) {
+	const WET_TIME_MINUTES = 60;
+	let wetTime = 0;
+  
+	// Find the first period when there is rain in the forecast
+	const wetPeriod = forecast.find(item => item.condition.includes("Rain"));
+	if (wetPeriod) {
+	  const wetStartTime = new Date(wetPeriod.time);
+	  const nextPeriod = forecast.slice(forecast.indexOf(wetPeriod) + 1).find(item => !item.condition.includes("Rain"));
+	  const wetEndTime = nextPeriod ? new Date(nextPeriod.time) : new Date(wetPeriod.time.getTime() + WET_TIME_MINUTES * 60 * 1000);
+	  wetTime = (wetEndTime.getTime() - wetStartTime.getTime()) / (60 * 1000);
+	}
+  
+	if (wetTime > 0) {
+	  const dryTime = new Date(new Date().getTime() + wetTime * 60 * 1000);
+	  const groundDryTime = dryTime.getTime();
+	  this.setState({ groundDryTime });
+	} else {
+	  this.setState({ groundDryTime: 0 });
+	}
+  }
+  
+  //search for location
+    searchLocation(location) {
+        const url = `http://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;
+        const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?q=${location}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;   
+        // Fetch current weather
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({
                     location: data.name,
                     temperature: data.main.temp,
                     sunrise: data.sys.sunrise,
@@ -56,32 +140,37 @@ export default class Iphone extends Component {
                     uvindex: data.main.uvindex,
                     cloudcoverage: data.clouds.all,
                     description: data.weather[0].description,
-                    condition: data.weather[0].main
-                  });
-                })
-                .catch(error => console.error(error));
-      
-              // Fetch forecast
-              fetch(forecastUrl)
-                .then(response => response.json())
-                .then(data => {
-                  const forecast = data.list.slice(0, 5).map(item => ({
-                    time: item.dt_txt,
+                    condition: data.weather[0].main,
+                });
+            })
+            .catch(error => console.error(error));
+
+        // Fetch forecast
+        fetch(forecastUrl)
+            .then(response => response.json())
+            .then(data => {
+                const forecast = data.list.slice(0, 5).map(item => ({
+                    time: new Date(item.dt_txt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
                     temp: Math.round(item.main.temp),
-                    condition: item.weather[0].description
-                  }));
-                  this.setState({ forecast });
-                })
-                .catch(error => console.error(error));
-            },
-            error => console.error(error)
-          );
-        }
-      }
-      
+                    condition: item.weather[0].description,
+                    cloudCoverage: item.clouds.all
+                }));
+                this.setState({ forecast });
+                const bestTime = this.findBestWalkingTime(forecast);
+                console.log(bestTime); // or set to state or do whatever you want with it
+                this.estimateGroundDryTime(forecast);
+            })
+            .catch(error => console.error(error));
+    }
+    
+
+
+
+	  
     // the main render method for the iphone component
     render() {
-        const { forecast } = this.state;
+		
+		const { location, temperature, description, forecast, bestTime, groundDryTime} = this.state;
         const next5HourForecast = forecast.slice(0, 5);
         // check if temperature data is fetched, if so add the sign styling to the page
         const tempStyles = this.state.temp ? `${style.temperature} ${style.filled}` : style.temperature;
@@ -96,6 +185,10 @@ export default class Iphone extends Component {
                 </div>
                 <div class={style.details}></div>
                 <div class={style_iphone.container}>
+                    <div class={style_iphone.search}>
+                        <input id="locationSearch" type="text" placeholder="Search for location" onChange={this.handleChange} />
+                        <button onClick={() => this.searchLocation(document.getElementById("locationSearch").value)}>Search</button>
+                    </div>
                     {/* {this.state.display ? <Button class={style_iphone.button} clickFunction={this.fetchWeatherData} /> : null} */}
                     {/* Luciana code */}
                     <div className="backdrop"
@@ -179,7 +272,7 @@ export default class Iphone extends Component {
                                 font-family: Inter, sans-serif;
                                 font-weight: 400;
                                 text-align: center;
-                                margin-top:3%">Best times for walking:</p>
+                                margin-top:3%">Best time for walking:</p>
                             <p className="_-1pm-5pm"
                                 style=" display: flex;
                                 flex-direction: column;
@@ -191,7 +284,7 @@ export default class Iphone extends Component {
                                 font-weight: 400;
                                 text-align: center;
                                 margin-top:5%">
-                                1pm - 5pm
+									{this.state.bestTime.time}
                                 </p>
                         </div>
                         <div className="weather-later"
@@ -209,19 +302,17 @@ export default class Iphone extends Component {
                                 padding-left: 5px;
                                 float:left;"
                             />
-                            <p className="light-rain-7pm-8pm"
-                                style="margin-left: 38%;
-                                display: flex;
-                                margin-top: 20px;
-                                color:white;
-                                font-size:20px;">Light Rain: 7pm-8pm</p>
                             <p className="ground-expected-to-be-we"
                                 style="margin-left:5%;
                                 display: block;
                                 margin-top: 20px;
                                 color:white;
                                 font-size:15px;">
-                                Ground expected to be wet until until 9:30pm
+                                {groundDryTime === 0 ? (
+								<p>The ground is currently dry</p>
+							) : (
+								<p>Estimation until ground is dry: {groundDryTime} minutes</p>
+							)}
                             </p>
                         </div>
                         <div className="graphic-dog"/>
@@ -331,9 +422,10 @@ export default class Iphone extends Component {
                                 font-size:15px;
                                 width:90%;"
                                 >
-                                {next5HourForecast.map((item, index) => (
-                                <span key={index}>{item.time.slice(11, 13)} </span>
-                                ))}
+                                {forecast.map((item, index) => (
+									<span key={index}>{item.time} </span>
+									))}
+
 
                                 </p>
 
@@ -396,7 +488,7 @@ export default class Iphone extends Component {
                             <p className="uv-index"
                             style="font-size: 15px;
                             color: rgba(255,255,255,0.7);
-                            padding-left: 20%;">UV Index</p>
+                            padding-left: 20%;">Cloud</p>
 
                             <div className="stats" style="
                             display:block;
@@ -445,18 +537,5 @@ export default class Iphone extends Component {
                 </div>
         );
         {/* end of Luciana code */ }
-    }
-
-    parseResponse = (parsed_json) => {
-        var location = parsed_json['name'];
-        var temp_c = parsed_json['main']['temp'];
-        var conditions = parsed_json['weather']['0']['description'];
-
-        // set states for fields so they could be rendered later on
-        this.setState({
-            locate: location,
-            temp: temp_c,
-            cond: conditions
-        });
     }
 }
