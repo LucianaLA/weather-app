@@ -162,8 +162,6 @@ estimateGroundDryTime(forecast) {
             })
             .catch(error => console.error(error));
     }
-    
-
 
 
 	  
@@ -174,6 +172,14 @@ estimateGroundDryTime(forecast) {
         const next5HourForecast = forecast.slice(0, 5);
         // check if temperature data is fetched, if so add the sign styling to the page
         const tempStyles = this.state.temp ? `${style.temperature} ${style.filled}` : style.temperature;
+///////captalizing words
+        const capitalizeWords = (str) => {
+            return str
+              .toLowerCase()
+              .split(' ')
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' ');
+          };
 
         // display all weather data
         return (
@@ -186,19 +192,19 @@ estimateGroundDryTime(forecast) {
                 <div class={style.details}></div>
                 <div class={style_iphone.container}>
                     <div class={style_iphone.search}>
-                        <input id="locationSearch" type="text" placeholder="Search for location" onChange={this.handleChange} />
-                        <button onClick={() => this.searchLocation(document.getElementById("locationSearch").value)}>Search</button>
+                        <input id="locationSearch" class={style.locationsearch} type="text" placeholder="Search for location" onChange={this.handleChange} />
+                        <button class={style.locationbutton} onClick={() => this.searchLocation(document.getElementById("locationSearch").value)}>Search</button>
                     </div>
                     {/* {this.state.display ? <Button class={style_iphone.button} clickFunction={this.fetchWeatherData} /> : null} */}
                     {/* Luciana code */}
                     <div class={style.backdrop}>
                         <div class={style.grouphead}>
                             <img
-                                src="https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/k6fpuppe53f-1%3A36?alt=media&token=3f930cc0-d6b5-44f5-8518-ab8e990a466f"
+                                src="../../assets/icons/menuicon.png"
                                 class={style.iconmenu}
                             />
                             <img
-                                src="https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/k6fpuppe53f-1%3A33?alt=media&token=b3bc6d13-74a4-44c8-98c3-8af245d11c5f"
+                                src="../../assets/icons/location-icon.png"
                                 class={style.iconlocation}
                             />
                             <span
@@ -212,9 +218,7 @@ estimateGroundDryTime(forecast) {
                                 {Math.round(this.state.temperature)}
                                 °</p>
                             <p class={style.weathertype}>
-                                Sunny</p>
-                            <p class={style.stateweather}>
-                                {this.state.description}
+                                {capitalizeWords(this.state.description)}
                             </p>
                         </div>
                         <div class={style.walkrecommendation}>
@@ -225,7 +229,7 @@ estimateGroundDryTime(forecast) {
                         </div>
                         <div class={style.weatherlater}>
                             <img
-                                src="https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/k6fpuppe53f-1%3A166?alt=media&token=171d43cb-994d-494d-9d14-192738004dbe"
+                                src="../../assets/icons/raindrops.png"
                                 class={style.iconweatherlater}/>
                             <p class={style.groundstate}>
                                 {groundDryTime === 0 ? (
@@ -237,17 +241,17 @@ estimateGroundDryTime(forecast) {
                         </div>
                         <div class={style.graphicpet}/>
                             <img
-                                src="https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/k6fpuppe53f-1%3A88?alt=media&token=295334cf-2623-403b-866b-c88285a48535"
+                                src="../../assets/icons/sun.png"
                                 class={style.iconsun}/>
                             <img
-                                src="https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/k6fpuppe53f-1%3A43?alt=media&token=10c7b2d3-f915-4f98-a55f-0d6980834db7"
+                                src="../../assets/icons/cloud.png"
                                 class={style.iconcloud}/>
                             <img
-                                src="https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/k6fpuppe53f-1%3A44?alt=media&token=d66ede89-0eb8-4f83-ba0d-ee515f159055"
+                                src="../../assets/icons/cloud.png"
                                 class={style.iconcloud1}
                             />
                             <img
-                                src="https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/k6fpuppe53f-1%3A27?alt=media&token=cb4de56b-46e7-40a6-a85c-471f1442460f"
+                                src="../../assets/icons/pet.png"
                                 class={style.petdrawing}/>
                         </div>
                     <div class={style.hourlyweather}>
@@ -267,17 +271,17 @@ estimateGroundDryTime(forecast) {
                                 <div key={index} class={style.hourdiv2}>
                                 {item.condition.includes('sunny') && (
                                     <img
-                                    src="https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/k6fpuppe53f-1%3A94?alt=media&token=bb7e90a0-73ed-4fc4-afe3-5088bbd86caf"
+                                    src="../../assets/icons/sun.png"
                                     class={style.hourweathericons}/>
                                 )}
                                 {item.condition.includes('rain') && (
                                     <img
-                                    src="https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/k6fpuppe53f-1%3A168?alt=media&token=46eabaa4-87c5-4151-aea4-cc84051c75e6"
+                                    src="../../assets/icons/nightrain.png"
                                     class={style.hourweathericons}/>
                                 )}
                                 {item.condition.includes('clouds') && (
                                     <img
-                                    src="https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/k6fpuppe53f-1%3A172?alt=media&token=44d3d1eb-25a6-44bb-945b-bcea1585f56e"
+                                    src="../../assets/icons/nightclouds.png"
                                     class={style.hourweathericons}/>
                                 )}
                                 <span>{(index < next5HourForecast.length - 1) ? ' ' : ''}</span>
@@ -288,8 +292,8 @@ estimateGroundDryTime(forecast) {
 
                             </div>
                             <img
-                                src="https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/k6fpuppe53f-1%3A48?alt=media&token=2f1d3d24-b8a4-4074-90c2-e7dab0915f21"
-                                class={style.hourlyline}/>
+                                    src="../../assets/icons/line.png"
+                                    class={style.hourlyline}/>
                             <p class={style.hours}
                                 >
                                 {forecast.map((item, index) => (
@@ -305,13 +309,13 @@ estimateGroundDryTime(forecast) {
                         <div class={style.windhumidcloud}>
                             <div class={style.windhumidcloudicons}>
                                 <img
-                                    src="https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/k6fpuppe53f-13%3A11?alt=media&token=05527e3f-a85f-4a04-982a-ea2636df350c"
+                                    src="../../assets/icons/wind.png"
                                     class={style.iconswind}/>
                                 <img
-                                    src="https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/k6fpuppe53f-13%3A14?alt=media&token=36972f3e-4297-49be-a97b-c02cd9893057"
+                                    src="../../assets/icons/humidity.png"
                                     class={style.iconhumidity}/>
                                 <img
-                                    src="https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/k6fpuppe53f-13%3A23?alt=media&token=6aaf4db8-9a52-4518-99b3-3e40f27d3929"
+                                    src="../../assets/icons/cloudcover.png"
                                     class={style.iconhot}/>
                                 
                             </div>
@@ -339,12 +343,11 @@ estimateGroundDryTime(forecast) {
                         <div class={style.sunrisemoonrise}>
                             <div class={style.iconssunrisemoonrise}>
                                 <img
-                                    src="https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/k6fpuppe53f-13%3A17?alt=media&token=37e24a82-4ca7-4ff2-bfd7-5e87e261ac9b"
+                                    src="../../assets/icons/sunrise.png"
                                     class={style.iconsunrise}
                                 />
                                 <img
-                                    src="https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/k6fpuppe53f-13%3A20?alt=media&token=17cd2bee-a793-4509-8371-298009ba91a9"
-
+                                    src="../../assets/icons/moonrise.png"
                                     class={style.iconmoonrise}
                                 />
                             </div>
