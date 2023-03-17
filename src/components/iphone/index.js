@@ -316,59 +316,40 @@ estimateGroundDryTime(forecast) {
                                 
                             </div>
                             <p class={style.windspeed}>Windspeed</p>
-                            <p className="humidity"
-                            style="font-size: 15px;
-                            color: rgba(255,255,255,0.7);
-                            padding-left: 20%;"
-                            >Humidity</p>
+                            <p class={style.humidity}>Humidity</p>
 
-                            <p className="uv-index"
-                            style="font-size: 15px;
-                            color: rgba(255,255,255,0.7);
-                            padding-left: 20%;">Cloud</p>
+                            <p class={style.cloudcover}>Cloud</p>
 
-                            <div className="stats" style="
-                            display:block;
-                            font-size: 18px;
-                            color: rgba(255,255,255,1);">
+                            <div class={style.stats}>
 
-                                <p className="_-10km-h" style="
-                                padding-left: 5%;">
+                                <p class={style.windspeedtext}>
                                     {this.state.windspeed} km/h
                                 </p>
 
-                                <p className="_-92"
-                                style="padding-left: 24%;">
+                                <p class={style.humidtext}>
                                     {this.state.humidity}%
                                 </p>
                                                     
-                                <p className="_-010" style="padding-left: 25%;">
+                                <p class={style.cloudtext}>
                                     {this.state.cloudcoverage}% 
                                     </p>
                             </div>
                         </div>
 
-                        <div className="sunrise-moonrise"
-                            style="display:block;
-                                        width:100%;
-                                        height: 50px;
-                                        position:relative;
-                                        bottom:34%;
-                                        color:white;">
-                            <div className="icons-sunrise-moonrise"
-                            style="display:block;">
+                        <div class={style.sunrisemoonrise}>
+                            <div class={style.iconssunrisemoonrise}>
                                 <img
                                     src="https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/k6fpuppe53f-13%3A17?alt=media&token=37e24a82-4ca7-4ff2-bfd7-5e87e261ac9b"
-                                    className="icon-sunrise"
+                                    class={style.iconsunrise}
                                 />
                                 <img
                                     src="https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/k6fpuppe53f-13%3A20?alt=media&token=17cd2bee-a793-4509-8371-298009ba91a9"
 
-                                    className="icon-moonrise"
+                                    class={style.iconmoonrise}
                                 />
                             </div>
-                            <p className="sunrise-630am">Sunrise: {this.state.sunriseDate}</p>
-                            <p className="sunset-530pm">Sunset: {this.state.sunsetDate}</p>
+                            <p class={style.sunrisetext}>Sunrise: {this.state.sunriseDate}</p>
+                            <p class={style.sunsettext}>Sunset: {this.state.sunsetDate}</p>
                         </div>
                     </div>
                 </div>
