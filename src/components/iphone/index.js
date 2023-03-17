@@ -235,7 +235,7 @@ estimateGroundDryTime(forecast) {
                                 {groundDryTime === 0 ? (
 								<p>The ground is currently dry</p>
 							) : (
-								<p>Estimation until ground is dry: {groundDryTime} minutes</p>
+								<p class={style.groundstatetxt}>Ground expected to be dry in: {groundDryTime} minutes</p>
 							)}
                             </p>
                         </div>
