@@ -191,10 +191,6 @@ export default class Iphone extends Component {
                 </div>
                 <div class={style.details}></div>
                 <div class={style_iphone.container}>
-                    <div class={style_iphone.search}>
-                        <input id="locationSearch" class={style.locationsearch} type="text" placeholder="Search for location" onChange={this.handleChange} />
-                        <button class={style.locationbutton} onClick={() => this.searchLocation(document.getElementById("locationSearch").value)}>Search</button>
-                    </div>
                     {/* {this.state.display ? <Button class={style_iphone.button} clickFunction={this.fetchWeatherData} /> : null} */}
                     {/* Luciana code */}
                     <div class={style.backdrop}>
@@ -205,7 +201,12 @@ export default class Iphone extends Component {
                                     class={style.iconmenu}
                                 />
                                 <div class={style.dropdowncontent}>
-                                    <a href="#">Link 1</a>
+                                    <div class={style.search}>
+                                        <input id="locationSearch" class={style.locationsearch} type="text" placeholder="Search locations" onChange={this.handleChange} />
+                                        <img src="../../assets/icons/lookup.png"
+                                            class={style.lens} onClick={() => this.searchLocation(document.getElementById("locationSearch").value)}
+                                        />
+                                    </div>
                                     <a href="#">Link 2</a>
                                     <a href="#">Link 3</a>
                                 </div>
