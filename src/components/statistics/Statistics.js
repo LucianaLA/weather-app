@@ -1,5 +1,5 @@
 import { h, render, Component } from 'preact';
-import style from './style';
+import style from '../iphone/style.less';
 
 function Statistics({ windspeed, humidity, cloudcoverage }) {
     return (

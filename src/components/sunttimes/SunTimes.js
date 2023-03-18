@@ -1,4 +1,4 @@
-import style from './style';
+import style from '../iphone/style.less';
 import {h, render, Component} from 'preact';
 
 function SunTimes({sunriseDate, sunsetDate}) {

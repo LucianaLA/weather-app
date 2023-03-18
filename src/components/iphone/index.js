@@ -3,18 +3,16 @@ import { h, render, Component } from 'preact';
 // import stylesheets for ipad & button
 import style from './style';
 import style_iphone from '../button/style_iphone';
-// import jquery for API calls
-import $ from 'jquery';
-// import the Button component
-//import the Math.round
-import { round } from 'lodash';
-import HourlyForecast from './HourlyForecast';
-import Statistics from './Statistics';
-import SunTimes from './SunTimes';
+import HourlyForecast from '../hourlyforecast/HourlyForecast';
+import Statistics from '../statistics/Statistics';
+import SunTimes from '../sunttimes/SunTimes';
 
-import Button from '../button';
-import BurgerMenu from './BurgerMenu';
 
+import WeatherNow from '../weathernow/WeatherNow';
+import BestTimeWalk from '../besttimewalk/BestTimeWalk';
+import Ground from '../ground/Ground';
+import TopLevel from '../toplevel/TopLevel';
+import PetTemperature from '../pettemperature/PetTemperature';
 
 export default class Iphone extends Component {
     constructor(props) {
@@ -190,76 +188,26 @@ export default class Iphone extends Component {
         // display all weather data
         return (
             <div class={style.container}>
-                <div class={style.header}>
-                    {/* <div class={style.city}>{this.state.locate}</div> */}
-                    {/* <div class={style.conditions}>{this.state.cond}</div> */}
-                    {/* <span class={tempStyles}>{this.state.temp}</span> */}
-                </div>
-                <div class={style.details}></div>
                 <div class={style_iphone.container}>
-                    {/* {this.state.display ? <Button class={style_iphone.button} clickFunction={this.fetchWeatherData} /> : null} */}
-                    {/* Luciana code */}
                     <div class={style.backdrop}>
-                        <div class={style.grouphead}>
-                            <div class={style.dropdown}>
-                                <img
-                                    src="../../assets/icons/menuicon.png"
-                                    class={style.iconmenu}
-                                />
-                                <BurgerMenu
-                                    onLocationSearch={this.searchLocation}
-                                />
-                            </div>
-                            <img
-                                src="../../assets/icons/location-icon.png"
-                                class={style.iconlocation}
-                            />
-                            <span
-                                class={style.currentlocation}
-                            >
-                                {this.state.location}
-                            </span>
-                        </div>
-                        <div class={style.currentweather}>
-                            <p class={style.temperaturenow}>
-                                {Math.round(this.state.temperature)}
-                                °</p>
-                            <p class={style.weathertype}>
-                                {capitalizeWords(this.state.description)}
-                            </p>
-                        </div>
-                        <div class={style.walkrecommendation}>
-                            <p class={style.walktext}>Best time for walking:</p>
-                            <p class={style.besttime}>
-                                {this.state.bestTime.time}
-                            </p>
-                        </div>
-                        <div class={style.weatherlater}>
-                            <img
-                                src="../../assets/icons/raindrops.png"
-                                class={style.iconweatherlater} />
-                            <p class={style.groundstate}>
-                                {groundDryTime === 0 ? (
-                                    <p>The ground is currently dry</p>
-                                ) : (
-                                    <p class={style.groundstatetxt}>Ground expected to be dry in: {groundDryTime} minutes</p>
-                                )}
-                            </p>
-                        </div>
-                        <div class={style.graphicpet} />
-                        <img
-                            src="../../assets/icons/sun.png"
-                            class={style.iconsun} />
-                        <img
-                            src="../../assets/icons/cloud.png"
-                            class={style.iconcloud} />
-                        <img
-                            src="../../assets/icons/cloud.png"
-                            class={style.iconcloud1}
+                        <TopLevel
+                            location={location}
+                            searchLocation={this.searchLocation}
                         />
-                        <img
-                            src="../../assets/icons/pet.png"
-                            class={style.petdrawing} />
+                        <WeatherNow
+                            capitalizeWords={capitalizeWords}
+                            temperature={this.state.temperature}
+                            description={this.state.description}
+                        />
+                        <BestTimeWalk
+                            bestTime={bestTime}
+                        />
+                        <Ground
+                            groundDryTime={groundDryTime}
+                        />
+                            <PetTemperature
+                                temperature={temperature}
+                            />
                     </div>
                     <HourlyForecast
                         next5HourForecast={next5HourForecast}
