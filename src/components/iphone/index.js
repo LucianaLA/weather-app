@@ -8,9 +8,12 @@ import $ from 'jquery';
 // import the Button component
 //import the Math.round
 import { round } from 'lodash';
-
+import HourlyForecast from './HourlyForecast';
+import Statistics from './Statistics';
+import SunTimes from './SunTimes';
 
 import Button from '../button';
+import BurgerMenu from './BurgerMenu';
 
 
 export default class Iphone extends Component {
@@ -121,7 +124,10 @@ export default class Iphone extends Component {
     }
 
     //search for location
-    searchLocation(location) {
+
+    
+
+    searchLocation = (location) => {
         const url = `http://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;
         const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?q=${location}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;
         // Fetch current weather
@@ -200,16 +206,9 @@ export default class Iphone extends Component {
                                     src="../../assets/icons/menuicon.png"
                                     class={style.iconmenu}
                                 />
-                                <div class={style.dropdowncontent}>
-                                    <div class={style.search}>
-                                        <input id="locationSearch" class={style.locationsearch} type="text" placeholder="Search locations" onChange={this.handleChange} />
-                                        <img src="../../assets/icons/lookup.png"
-                                            class={style.lens} onClick={() => this.searchLocation(document.getElementById("locationSearch").value)}
-                                        />
-                                    </div>
-                                    <a href="#">Link 2</a>
-                                    <a href="#">Link 3</a>
-                                </div>
+                                <BurgerMenu
+                                    onLocationSearch={this.searchLocation}
+                                />
                             </div>
                             <img
                                 src="../../assets/icons/location-icon.png"
@@ -262,109 +261,24 @@ export default class Iphone extends Component {
                             src="../../assets/icons/pet.png"
                             class={style.petdrawing} />
                     </div>
-                    <div class={style.hourlyweather}>
-                        <p class={style.timeweather}
-                        >
-                            <div>
-                                {next5HourForecast.map((item, index) => (
-                                    <span>{item.temp}°C{(index < next5HourForecast.length - 1) ? ' ' : ''}</span>
-                                ))}
-                            </div>
-                        </p>
+                    <HourlyForecast
+                        next5HourForecast={next5HourForecast}
+                        forecast={forecast}
+                    />
 
+                    <Statistics
+                        temperature={temperature}
+                        windspeed={this.state.windspeed}
+                        humidity={this.state.humidity}
+                        cloudcoverage={this.state.cloudcoverage}
+                    />
 
-                        <div class={style.hourlyweathericons}>
-                            <div class={style.hourlydiv}>
-                                {next5HourForecast.map((item, index) => (
-                                    <div key={index} class={style.hourdiv2}>
-                                        {item.condition.includes('sunny') && (
-                                            <img
-                                                src="../../assets/icons/sun.png"
-                                                class={style.hourweathericons} />
-                                        )}
-                                        {item.condition.includes('rain') && (
-                                            <img
-                                                src="../../assets/icons/nightrain.png"
-                                                class={style.hourweathericons} />
-                                        )}
-                                        {item.condition.includes('clouds') && (
-                                            <img
-                                                src="../../assets/icons/nightclouds.png"
-                                                class={style.hourweathericons} />
-                                        )}
-                                        <span>{(index < next5HourForecast.length - 1) ? ' ' : ''}</span>
-                                    </div>
-                                ))}
-                            </div>
-
-
-                        </div>
-                        <img
-                            src="../../assets/icons/line.png"
-                            class={style.hourlyline} />
-                        <p class={style.hours}
-                        >
-                            {forecast.map((item, index) => (
-                                <span key={index}>{item.time} </span>
-                            ))}
-
-
-                        </p>
-
-
-                    </div>
-
-                    <div class={style.windhumidcloud}>
-                        <div class={style.windhumidcloudicons}>
-                            <img
-                                src="../../assets/icons/wind.png"
-                                class={style.iconswind} />
-                            <img
-                                src="../../assets/icons/humidity.png"
-                                class={style.iconhumidity} />
-                            <img
-                                src="../../assets/icons/cloudcover.png"
-                                class={style.iconhot} />
-
-                        </div>
-                        <p class={style.windspeed}>Windspeed</p>
-                        <p class={style.humidity}>Humidity</p>
-
-                        <p class={style.cloudcover}>Cloud</p>
-
-                        <div class={style.stats}>
-
-                            <p class={style.windspeedtext}>
-                                {this.state.windspeed} km/h
-                            </p>
-
-                            <p class={style.humidtext}>
-                                {this.state.humidity}%
-                            </p>
-
-                            <p class={style.cloudtext}>
-                                {this.state.cloudcoverage}%
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class={style.sunrisemoonrise}>
-                        <div class={style.iconssunrisemoonrise}>
-                            <img
-                                src="../../assets/icons/sunrise.png"
-                                class={style.iconsunrise}
-                            />
-                            <img
-                                src="../../assets/icons/moonrise.png"
-                                class={style.iconmoonrise}
-                            />
-                        </div>
-                        <p class={style.sunrisetext}>Sunrise: {this.state.sunriseDate}</p>
-                        <p class={style.sunsettext}>Sunset: {this.state.sunsetDate}</p>
-                    </div>
+                    <SunTimes
+                        sunsetDate = {this.state.sunsetDate}
+                        sunriseDate = {this.state.sunriseDate}
+                    />
                 </div>
             </div>
         );
-        {/* end of Luciana code */ }
     }
 }
