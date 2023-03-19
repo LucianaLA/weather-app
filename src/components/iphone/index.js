@@ -148,7 +148,25 @@ export default class Iphone extends Component {
                     condition: data.weather[0].main,
                 });
             })
-            .catch(error => console.error(error));
+
+            //if location doesnt exist, render location could not be found
+            .catch(error => this.setState(
+                { 
+                    location: 'Location not found',
+                    temperature: '',
+                    sunrise: '',
+                    sunriseDate: '',
+                    sunset: '',
+                    sunsetDate: '',
+                    windspeed: '',
+                    humidity: '',
+                    uvindex: '',
+                    cloudcoverage: '',
+                    description: '',
+                    condition: ''
+
+                }));
+            
 
         // Fetch forecast
         fetch(forecastUrl)
