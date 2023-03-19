@@ -206,7 +206,7 @@ export default class Iphone extends Component {
                             groundDryTime={groundDryTime}
                         />
                             <PetTemperature
-                                temperature={temperature}
+                                condition={this.state.condition}
                             />
                     </div>
                     <HourlyForecast
