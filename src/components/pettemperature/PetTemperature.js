@@ -10,6 +10,7 @@ function PetTemperature({ condition }) {
       switch (condition) {
         case 'Sun':
         case 'Sunny':
+        case 'Clear':
           image =  <img src="../../assets/icons/sun.png" class={style.iconsun} />;
           break;
         case 'Cloudy':
@@ -22,6 +23,18 @@ function PetTemperature({ condition }) {
         case 'Raindrops':
           image =  <img src="../../assets/icons/raindrops.png" class={style.iconraindrops} />;  
           break;
+        case 'Snow':
+        case 'Snowy':
+          image =  <img src="../../assets/icons/snow.png" class={style.iconsnow} />;
+          break;
+        case 'Thunderstorm':  
+          image =  <img src="../../assets/icons/thunderstorm.png" class={style.iconthunderstorm} />;
+          break;
+        case 'Fog':
+        case 'Foggy':
+          image =  <img src="../../assets/icons/fog.png" class={style.iconfog} />;
+          break;
+        case 'Drizzle':
         default:
           image =  <img src="../../assets/icons/sun.png" class={style.iconsun} />;
       }

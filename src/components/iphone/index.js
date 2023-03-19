@@ -30,6 +30,7 @@ export default class Iphone extends Component {
             cloudcoverage: '',
             description: '',
             condition: '',
+            main: '',
             bestTime: '',
             groundDryTime: '',
             forecast: []
