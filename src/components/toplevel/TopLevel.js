@@ -2,7 +2,7 @@ import {h, render, Component} from 'preact';
 import style from '../iphone/style.less';
 import BurgerMenu from '../burgermenu/BurgerMenu';
 
-function TopLevel({location, searchLocation}) {
+function TopLevel({location, searchLocation, locationButton}) {
     return (
         <div class={style.grouphead}>
                             <div class={style.dropdown}>
@@ -12,6 +12,7 @@ function TopLevel({location, searchLocation}) {
                                 />
                                 <BurgerMenu
                                     onLocationSearch={searchLocation}
+                                    onCurrentLocation={locationButton}
                                 />
                             </div>
                             <img

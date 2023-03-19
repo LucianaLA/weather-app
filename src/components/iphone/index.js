@@ -186,6 +186,66 @@ export default class Iphone extends Component {
             .catch(error => console.error(error));
     }
 
+    locationButton = (latitude, longitude) => {
+        const url = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;
+        const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;
+        // Fetch current weather
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({
+                    location: data.name,
+                    temperature: data.main.temp,
+                    sunrise: data.sys.sunrise,
+                    sunriseDate: new Date(data.sys.sunrise * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    sunset: data.sys.sunset,
+                    sunsetDate: new Date(data.sys.sunset * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    windspeed: data.wind.speed,
+                    humidity: data.main.humidity,
+                    uvindex: data.main.uvindex,
+                    cloudcoverage: data.clouds.all,
+                    description: data.weather[0].description,
+                    condition: data.weather[0].main,
+                });
+            })
+
+            //if location doesnt exist, render location could not be found
+            .catch(error => this.setState(
+                { 
+                    location: 'Location not found',
+                    temperature: '',
+                    sunrise: '',
+                    sunriseDate: '',
+                    sunset: '',
+                    sunsetDate: '',
+                    windspeed: '',
+                    humidity: '',
+                    uvindex: '',
+                    cloudcoverage: '',
+                    description: '',
+                    condition: ''
+
+                }));
+            
+
+        // Fetch forecast
+        fetch(forecastUrl)
+            .then(response => response.json())
+            .then(data => {
+                const forecast = data.list.slice(0, 5).map(item => ({
+                    time: new Date(item.dt_txt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    temp: Math.round(item.main.temp),
+                    condition: item.weather[0].description,
+                    cloudCoverage: item.clouds.all
+                }));
+                this.setState({ forecast });
+                const bestTime = this.findBestWalkingTime(forecast);
+                console.log(bestTime); // or set to state or do whatever you want with it
+                this.estimateGroundDryTime(forecast);
+            })
+            .catch(error => console.error(error));
+    }
+
 
 
     // the main render method for the iphone component
@@ -212,6 +272,7 @@ export default class Iphone extends Component {
                         <TopLevel
                             location={location}
                             searchLocation={this.searchLocation}
+                            locationButton={this.locationButton}
                         />
                         <WeatherNow
                             capitalizeWords={capitalizeWords}
