@@ -105,20 +105,20 @@ export default class Iphone extends Component {
         let wetTime = 0;
 
         // Find the first period when there is rain in the forecast
-        const wetPeriod = forecast.find(item => item.condition.includes("Rain"));
-        if (wetPeriod) {
-            const wetStartTime = new Date(wetPeriod.time);
-            const nextPeriod = forecast.slice(forecast.indexOf(wetPeriod) + 1).find(item => !item.condition.includes("Rain"));
-            const wetEndTime = nextPeriod ? new Date(nextPeriod.time) : new Date(wetPeriod.time.getTime() + WET_TIME_MINUTES * 60 * 1000);
-            wetTime = (wetEndTime.getTime() - wetStartTime.getTime()) / (60 * 1000);
+        const wetPeriod = forecast.find(item => item.condition.includes("Rain")); //if there is rain in the forecast
+        if (wetPeriod) { //if there is rain in the forecast
+            const wetStartTime = new Date(wetPeriod.time); //get the time of the rain
+            const nextPeriod = forecast.slice(forecast.indexOf(wetPeriod) + 1).find(item => !item.condition.includes("Rain")); //get the next period
+            const wetEndTime = nextPeriod ? new Date(nextPeriod.time) : new Date(wetPeriod.time.getTime() + WET_TIME_MINUTES * 60 * 1000); //if there is no next period, set the end time to 60 minutes after the start time
+            wetTime = (wetEndTime.getTime() - wetStartTime.getTime()) / (60 * 1000); //calculate the wet time in minutes
         }
 
-        if (wetTime > 0) {
-            const dryTime = new Date(new Date().getTime() + wetTime * 60 * 1000);
-            const groundDryTime = dryTime.getTime();
-            this.setState({ groundDryTime });
-        } else {
-            this.setState({ groundDryTime: 0 });
+        if (wetTime > 0) { //if there is rain in the forecast
+            const dryTime = new Date(new Date().getTime() + wetTime * 60 * 1000); //calculate the dry time
+            const groundDryTime = dryTime.getTime(); //set the dry time
+            this.setState({ groundDryTime }); //set the dry time
+        } else { //if there is no rain in the forecast
+            this.setState({ groundDryTime: 0 }); //set the dry time to 0
         }
     }
 
@@ -131,10 +131,10 @@ export default class Iphone extends Component {
         const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?q=${location}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;
         // Fetch current weather
         fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                this.setState({
-                    location: data.name,
+            .then(response => response.json()) 
+            .then(data => { 
+                this.setState({ //set the state to the data from the api
+                    location: data.name, 
                     temperature: data.main.temp,
                     sunrise: data.sys.sunrise,
                     sunriseDate: new Date(data.sys.sunrise * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -150,8 +150,8 @@ export default class Iphone extends Component {
             })
 
             //if location doesnt exist, render location could not be found
-            .catch(error => this.setState(
-                { 
+            .catch(error => this.setState( 
+                { //if location isn't found set the state to the following
                     location: 'Location not found',
                     temperature: '',
                     sunrise: '',
@@ -172,28 +172,27 @@ export default class Iphone extends Component {
         fetch(forecastUrl)
             .then(response => response.json())
             .then(data => {
-                const forecast = data.list.slice(0, 5).map(item => ({
-                    time: new Date(item.dt_txt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                    temp: Math.round(item.main.temp),
-                    condition: item.weather[0].description,
-                    cloudCoverage: item.clouds.all
+                const forecast = data.list.slice(0, 5).map(item => ({ //get the forecast for the next 5 hour time slots (every 3 hours)
+                    time: new Date(item.dt_txt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), //get the time of the forecast
+                    temp: Math.round(item.main.temp), //get the temperature of the forecast
+                    condition: item.weather[0].description, //get the condition of the forecast
+                    cloudCoverage: item.clouds.all //get the cloud coverage of the forecast
                 }));
-                this.setState({ forecast });
-                const bestTime = this.findBestWalkingTime(forecast);
-                console.log(bestTime); // or set to state or do whatever you want with it
-                this.estimateGroundDryTime(forecast);
+                this.setState({ forecast }); //set the state to the forecast
+                const bestTime = this.findBestWalkingTime(forecast); //find the best time to walk
+                this.estimateGroundDryTime(forecast);  //estimate the time the ground will be dry
             })
             .catch(error => console.error(error));
     }
 
-    locationButton = (latitude, longitude) => {
+    locationButton = (latitude, longitude) => { //get the location of the user
         const url = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;
         const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;
         // Fetch current weather
-        fetch(url)
+        fetch(url) 
             .then(response => response.json())
             .then(data => {
-                this.setState({
+                this.setState({ //set the state to the data from the api
                     location: data.name,
                     temperature: data.main.temp,
                     sunrise: data.sys.sunrise,
