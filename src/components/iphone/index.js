@@ -124,17 +124,17 @@ export default class Iphone extends Component {
 
     //search for location
 
-    
+
 
     searchLocation = (location) => {
         const url = `http://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;
         const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?q=${location}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;
         // Fetch current weather
         fetch(url)
-            .then(response => response.json()) 
-            .then(data => { 
+            .then(response => response.json())
+            .then(data => {
                 this.setState({ //set the state to the data from the api
-                    location: data.name, 
+                    location: data.name,
                     temperature: data.main.temp,
                     sunrise: data.sys.sunrise,
                     sunriseDate: new Date(data.sys.sunrise * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -150,7 +150,7 @@ export default class Iphone extends Component {
             })
 
             //if location doesnt exist, render location could not be found
-            .catch(error => this.setState( 
+            .catch(error => this.setState(
                 { //if location isn't found set the state to the following
                     location: 'Location not found',
                     temperature: '',
@@ -166,7 +166,7 @@ export default class Iphone extends Component {
                     condition: ''
 
                 }));
-            
+
 
         // Fetch forecast
         fetch(forecastUrl)
@@ -189,7 +189,7 @@ export default class Iphone extends Component {
         const url = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;
         const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;
         // Fetch current weather
-        fetch(url) 
+        fetch(url)
             .then(response => response.json())
             .then(data => {
                 this.setState({ //set the state to the data from the api
@@ -210,7 +210,7 @@ export default class Iphone extends Component {
 
             //if location doesnt exist, render location could not be found
             .catch(error => this.setState(
-                { 
+                {
                     location: 'Location not found',
                     temperature: '',
                     sunrise: '',
@@ -225,22 +225,22 @@ export default class Iphone extends Component {
                     condition: ''
 
                 }));
-            
+
 
         // Fetch forecast
         fetch(forecastUrl)
             .then(response => response.json())
             .then(data => {
-                const forecast = data.list.slice(0, 5).map(item => ({
+                const forecast = data.list.slice(0, 5).map(item => ({ //get the forecast for the next 5 hour time slots (every 3 hours)
                     time: new Date(item.dt_txt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                     temp: Math.round(item.main.temp),
                     condition: item.weather[0].description,
                     cloudCoverage: item.clouds.all
                 }));
-                this.setState({ forecast });
-                const bestTime = this.findBestWalkingTime(forecast);
+                this.setState({ forecast }); //set the state to the forecast
+                const bestTime = this.findBestWalkingTime(forecast); //find the best time to walk
                 console.log(bestTime); // or set to state or do whatever you want with it
-                this.estimateGroundDryTime(forecast);
+                this.estimateGroundDryTime(forecast); //estimate the time the ground will be dry
             })
             .catch(error => console.error(error));
     }
@@ -255,7 +255,7 @@ export default class Iphone extends Component {
         // check if temperature data is fetched, if so add the sign styling to the page
         const tempStyles = this.state.temp ? `${style.temperature} ${style.filled}` : style.temperature;
         ///////captalizing words
-        const capitalizeWords = (str) => {
+        const capitalizeWords = (str) => { //function to capitalize the first letter of each word
             return str
                 .toLowerCase()
                 .split(' ')
@@ -268,41 +268,41 @@ export default class Iphone extends Component {
             <div class={style.container}>
                 <div class={style_iphone.container}>
                     <div class={style.backdrop}>
-                        <TopLevel
-                            location={location}
-                            searchLocation={this.searchLocation}
-                            locationButton={this.locationButton}
+                        <TopLevel //render the top level component
+                            location={location} //pass the location as an argument to the TopLevel component
+                            searchLocation={this.searchLocation} //pass the searchLocation function as an argument to the TopLevel component
+                            locationButton={this.locationButton} //pass the locationButton function as an argument to the TopLevel component
                         />
-                        <WeatherNow
-                            capitalizeWords={capitalizeWords}
-                            temperature={this.state.temperature}
-                            description={this.state.description}
+                        <WeatherNow //render the WeatherNow component
+                            capitalizeWords={capitalizeWords} //pass the capitalizeWords function as an argument to the WeatherNow component
+                            temperature={this.state.temperature} //pass the temperature as an argument to the WeatherNow component
+                            description={this.state.description} //pass the description as an argument to the WeatherNow component
                         />
-                        <BestTimeWalk
-                            bestTime={bestTime}
+                        <BestTimeWalk //render the BestTimeWalk component
+                            bestTime={bestTime} //pass the bestTime as an argument to the BestTimeWalk component
                         />
-                        <Ground
-                            groundDryTime={groundDryTime}
+                        <Ground //render the Ground component
+                            groundDryTime={groundDryTime} //pass the groundDryTime as an argument to the Ground component
                         />
-                            <PetTemperature
-                                condition={this.state.condition}
-                            />
+                        <PetTemperature //render the PetTemperature component
+                            condition={this.state.condition} //pass the condition as an argument to the PetTemperature component
+                        />
                     </div>
-                    <HourlyForecast
-                        next5HourForecast={next5HourForecast}
-                        forecast={forecast}
+                    <HourlyForecast //render the HourlyForecast component
+                        next5HourForecast={next5HourForecast} //pass the next5HourForecast as an argument to the HourlyForecast component
+                        forecast={forecast} //pass the forecast as an argument to the HourlyForecast component
                     />
 
-                    <Statistics
-                        temperature={temperature}
-                        windspeed={this.state.windspeed}
-                        humidity={this.state.humidity}
-                        cloudcoverage={this.state.cloudcoverage}
+                    <Statistics //render the Statistics component
+                        temperature={temperature}  //pass the temperature as an argument to the Statistics component
+                        windspeed={this.state.windspeed} //pass the windspeed as an argument to the Statistics component
+                        humidity={this.state.humidity} //pass the humidity as an argument to the Statistics component
+                        cloudcoverage={this.state.cloudcoverage} //pass the cloudcoverage as an argument to the Statistics component
                     />
 
-                    <SunTimes
-                        sunsetDate = {this.state.sunsetDate}
-                        sunriseDate = {this.state.sunriseDate}
+                    <SunTimes //render the SunTimes component
+                        sunsetDate={this.state.sunsetDate} //pass the sunsetDate as an argument to the SunTimes component
+                        sunriseDate={this.state.sunriseDate} //pass the sunriseDate as an argument to the SunTimes component
                     />
                 </div>
             </div>
