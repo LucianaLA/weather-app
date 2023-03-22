@@ -81,11 +81,15 @@ export default class Iphone extends Component {
                                 windSpeed: item.wind.speed,
                                 humidity: item.main.humidity,
                                 description: item.weather[0].description,
-                                main: item.weather[0].main
+                                main: item.weather[0].main,
                             }));
-                            this.setState({ forecast });
                             const bestTime = this.findBestWalkingTime(forecast);
                             this.estimateGroundDryTime(forecast);
+
+                            this.setState({
+                                forecast,
+                                bestTime
+                            });
                         })
                         .catch(error => console.error(error));
                 },
@@ -101,7 +105,7 @@ export default class Iphone extends Component {
         forecast.forEach(item => {
             console.log(item.time);
             var score = 0;
-            console.log(item.temp + " " + item.condition + " " + item.cloudCoverage + " " + item.windSpeed + " " + item.humidity, + " " + item.description + " " + item.main);
+            console.log(item.temp + " " + item.condition + " " + item.cloudCoverage + " " + item.windSpeed + " " + item.humidity + " " + item.description + " " + item.main);
             switch (item.main) {  // check the condition and add to the score
                 case 'Clear': // if the condition is clear
                     score += 5;
@@ -173,29 +177,29 @@ export default class Iphone extends Component {
     }
 
     estimateGroundDryTime(forecast) { //estimate the time it will take for the ground to dry
-        let timeToDry = 0;
+        let groundDryTime = 0;
         forecast.forEach(item => {
             //if it is raining at the time, add 1 hour to the time it will take for the ground to dry
             if (item.main === 'Rain') {
-                timeToDry += 1;
+                groundDryTime += 1;
             } else if (item.main === 'Snow') {
-                timeToDry += 2;
+                groundDryTime += 2;
             } else if (item.main === 'Thunderstorm') {
-                timeToDry += 3;
+                groundDryTime += 3;
             } else {
-                timeToDry += 0;
+                groundDryTime += 0;
             }
             if (item.windSpeed > 5 && item.windSpeed < 10) {
-                timeToDry += 1;
+                groundDryTime += 1;
             } else if (item.windSpeed > 10) {
-                timeToDry += 2;
+                groundDryTime += 2;
             }
             if (item.humidity > 50) {
-                timeToDry += 1;
+                groundDryTime += 1;
             }
         });
-        this.setState({ timeToDry: timeToDry });
-        return timeToDry;
+        this.setState({ groundDryTime });
+        return groundDryTime;
     
     }
 

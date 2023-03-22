@@ -9,7 +9,7 @@ function BestTimeWalk({bestTime}) {
         <div class={style.walkrecommendation}>
             <p class={style.walktext}>Best time for walking:</p> 
             <p class={style.besttime}> 
-                {bestTime.time} {/* displays the best time*/}
+                {bestTime} {/* displays the best time*/}
             </p>
         </div>
     )
