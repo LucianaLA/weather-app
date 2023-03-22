@@ -2,7 +2,7 @@ import { h, render, Component } from 'preact';
 import style from '../iphone/style.less';
 
 
-function Statistics({ windspeed, humidity, cloudcoverage }) {
+function Statistics({ windspeed, humidity, cloudCoverage }) {
     return (
         <div class={style.windhumidcloud}>
             <div class={style.windhumidcloudicons}>
@@ -33,7 +33,7 @@ function Statistics({ windspeed, humidity, cloudcoverage }) {
                 </p>
 
                 <p class={style.cloudtext}> {/* cloud coverage */}
-                    {cloudcoverage}%
+                    {cloudCoverage}%
                 </p>
             </div>
         </div>

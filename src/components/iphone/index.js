@@ -27,7 +27,7 @@ export default class Iphone extends Component {
             windspeed: '',
             humidity: '',
             uvindex: '',
-            cloudcoverage: '',
+            cloudCoverage: '',
             description: '',
             condition: '',
             main: '',
@@ -35,6 +35,8 @@ export default class Iphone extends Component {
             groundDryTime: '',
             forecast: []
         };
+        this.findBestWalkingTime = this.findBestWalkingTime.bind(this);
+        this.estimateGroundDryTime = this.estimateGroundDryTime.bind(this);
     }
 
     componentDidMount() {
@@ -59,9 +61,10 @@ export default class Iphone extends Component {
                                 windspeed: data.wind.speed,
                                 humidity: data.main.humidity,
                                 uvindex: data.main.uvindex,
-                                cloudcoverage: data.clouds.all,
+                                cloudCoverage: data.clouds.all,
                                 description: data.weather[0].description,
                                 condition: data.weather[0].main,
+                                main: data.weather[0].main
                             });
                         })
                         .catch(error => console.error(error));
@@ -74,11 +77,14 @@ export default class Iphone extends Component {
                                 time: new Date(item.dt_txt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                                 temp: Math.round(item.main.temp),
                                 condition: item.weather[0].description,
-                                cloudCoverage: item.clouds.all
+                                cloudCoverage: item.clouds.all,
+                                windSpeed: item.wind.speed,
+                                humidity: item.main.humidity,
+                                description: item.weather[0].description,
+                                main: item.weather[0].main
                             }));
                             this.setState({ forecast });
                             const bestTime = this.findBestWalkingTime(forecast);
-                            console.log(bestTime); // or set to state or do whatever you want with it
                             this.estimateGroundDryTime(forecast);
                         })
                         .catch(error => console.error(error));
@@ -89,37 +95,108 @@ export default class Iphone extends Component {
     }
 
 
-    findBestWalkingTime(forecast) {
+    findBestWalkingTime(forecast) { //find the best time to walk using temperature, cloud coverage, wind speed and the condition based on a score system
         let bestTime = forecast[0];
-        for (let i = 1; i < forecast.length; i++) {
-            if (forecast[i].temp > bestTime.temp && forecast[i].cloudCoverage < 50 && forecast[i].condition === "Clear") {
-                bestTime = forecast[i];
+        let bestScore = 0;
+        forecast.forEach(item => {
+            console.log(item.time);
+            var score = 0;
+            console.log(item.temp + " " + item.condition + " " + item.cloudCoverage + " " + item.windSpeed + " " + item.humidity, + " " + item.description + " " + item.main);
+            switch (item.main) {  // check the condition and add to the score
+                case 'Clear': // if the condition is clear
+                    score += 5;
+                    break;
+                case 'Clouds':
+                    score += 3;
+                    break;
+                case 'Rain': // if the condition is rainy
+                    score -= 2;
+                    break;
+                case 'Snow': // if the condition is snowy
+                    score -= 3;
+                    break;
+                case 'Thunderstorm':  // if the condition is thunderstormy
+                    score -= 5;
+                    break;
+                case 'Fog': // if the condition is atmosphere related
+                case 'Mist':
+                case 'Haze':
+                case 'Dust':
+                case 'Sand':
+                case 'Ash':
+                case 'Squall':
+                case 'Tornado':
+                    score -= 1;
+                    break;
+                case 'Drizzle': // if the condition is drizzly
+                    score -= 1;
+                default:
+                    score += 0;
             }
-        }
-        this.setState({ bestTime });
+            console.log("score after condition: " + score)
+            if (item.cloudCoverage > 50) {
+                score = score
+            } else if (item.cloudCoverage > 75) {
+                score -= score
+            } else {
+                score += 2;
+            }
+            console.log("score after condition: " + score)
+            if (item.windSpeed > 5) {
+                score = score
+            } else if (item.windSpeed > 10) {
+                score -= 2
+            } else {
+                score += 2;
+            }
+            console.log("score after condition: " + score)
+            if (item.temp > 20 && item.temp < 25) {
+                score += 2;
+            } else if (item.temp > 25) {
+                score += 1;
+            } else if (item.temp < 20) {
+                score -= 1;
+            } else {
+                score += 0;
+            }
+            console.log("score after condition: " + score)
+            if (score > bestScore) {
+                bestScore = score;
+                bestTime = item.time;
+            }
+            console.log("Best time to walk: " + bestTime + " with a score of " + bestScore)
+            console.log("current time: " + item.time + " with a score of " + score)
+        });
+        console.log("Best time to walk: " + bestTime + " with a score of " + bestScore)
+        this.setState({bestTime});
         return bestTime;
     }
 
-    estimateGroundDryTime(forecast) {
-        const WET_TIME_MINUTES = 60;
-        let wetTime = 0;
-
-        // Find the first period when there is rain in the forecast
-        const wetPeriod = forecast.find(item => item.condition.includes("Rain")); //if there is rain in the forecast
-        if (wetPeriod) { //if there is rain in the forecast
-            const wetStartTime = new Date(wetPeriod.time); //get the time of the rain
-            const nextPeriod = forecast.slice(forecast.indexOf(wetPeriod) + 1).find(item => !item.condition.includes("Rain")); //get the next period
-            const wetEndTime = nextPeriod ? new Date(nextPeriod.time) : new Date(wetPeriod.time.getTime() + WET_TIME_MINUTES * 60 * 1000); //if there is no next period, set the end time to 60 minutes after the start time
-            wetTime = (wetEndTime.getTime() - wetStartTime.getTime()) / (60 * 1000); //calculate the wet time in minutes
-        }
-
-        if (wetTime > 0) { //if there is rain in the forecast
-            const dryTime = new Date(new Date().getTime() + wetTime * 60 * 1000); //calculate the dry time
-            const groundDryTime = dryTime.getTime(); //set the dry time
-            this.setState({ groundDryTime }); //set the dry time
-        } else { //if there is no rain in the forecast
-            this.setState({ groundDryTime: 0 }); //set the dry time to 0
-        }
+    estimateGroundDryTime(forecast) { //estimate the time it will take for the ground to dry
+        let timeToDry = 0;
+        forecast.forEach(item => {
+            //if it is raining at the time, add 1 hour to the time it will take for the ground to dry
+            if (item.main === 'Rain') {
+                timeToDry += 1;
+            } else if (item.main === 'Snow') {
+                timeToDry += 2;
+            } else if (item.main === 'Thunderstorm') {
+                timeToDry += 3;
+            } else {
+                timeToDry += 0;
+            }
+            if (item.windSpeed > 5 && item.windSpeed < 10) {
+                timeToDry += 1;
+            } else if (item.windSpeed > 10) {
+                timeToDry += 2;
+            }
+            if (item.humidity > 50) {
+                timeToDry += 1;
+            }
+        });
+        this.setState({ timeToDry: timeToDry });
+        return timeToDry;
+    
     }
 
     //search for location
@@ -143,9 +220,11 @@ export default class Iphone extends Component {
                     windspeed: data.wind.speed,
                     humidity: data.main.humidity,
                     uvindex: data.main.uvindex,
-                    cloudcoverage: data.clouds.all,
+                    cloudCoverage: data.clouds.all,
                     description: data.weather[0].description,
                     condition: data.weather[0].main,
+                    main: data.weather[0].main,
+                    icon: data.weather[0].icon
                 });
             })
 
@@ -160,8 +239,7 @@ export default class Iphone extends Component {
                     sunsetDate: '',
                     windspeed: '',
                     humidity: '',
-                    uvindex: '',
-                    cloudcoverage: '',
+                    cloudCoverage: '',
                     description: '',
                     condition: ''
 
@@ -176,7 +254,10 @@ export default class Iphone extends Component {
                     time: new Date(item.dt_txt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), //get the time of the forecast
                     temp: Math.round(item.main.temp), //get the temperature of the forecast
                     condition: item.weather[0].description, //get the condition of the forecast
-                    cloudCoverage: item.clouds.all //get the cloud coverage of the forecast
+                    cloudCoverage: item.clouds.all, //get the cloud coverage of the forecast
+                    windSpeed: item.wind.speed, //get the wind speed of the forecast
+                    humidity: item.main.humidity, //get the humidity of the forecast
+                    main: item.weather[0].main, //get the main condition of the forecast
                 }));
                 this.setState({ forecast }); //set the state to the forecast
                 const bestTime = this.findBestWalkingTime(forecast); //find the best time to walk
@@ -202,7 +283,7 @@ export default class Iphone extends Component {
                     windspeed: data.wind.speed,
                     humidity: data.main.humidity,
                     uvindex: data.main.uvindex,
-                    cloudcoverage: data.clouds.all,
+                    cloudCoverage: data.clouds.all,
                     description: data.weather[0].description,
                     condition: data.weather[0].main,
                 });
@@ -220,7 +301,7 @@ export default class Iphone extends Component {
                     windspeed: '',
                     humidity: '',
                     uvindex: '',
-                    cloudcoverage: '',
+                    cloudCoverage: '',
                     description: '',
                     condition: ''
 
@@ -235,7 +316,10 @@ export default class Iphone extends Component {
                     time: new Date(item.dt_txt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                     temp: Math.round(item.main.temp),
                     condition: item.weather[0].description,
-                    cloudCoverage: item.clouds.all
+                    cloudCoverage: item.clouds.all,
+                    windSpeed: item.wind.speed,
+                    humidity: item.main.humidity,
+                    main: item.weather[0].main
                 }));
                 this.setState({ forecast }); //set the state to the forecast
                 const bestTime = this.findBestWalkingTime(forecast); //find the best time to walk
@@ -297,7 +381,7 @@ export default class Iphone extends Component {
                         temperature={temperature}  //pass the temperature as an argument to the Statistics component
                         windspeed={this.state.windspeed} //pass the windspeed as an argument to the Statistics component
                         humidity={this.state.humidity} //pass the humidity as an argument to the Statistics component
-                        cloudcoverage={this.state.cloudcoverage} //pass the cloudcoverage as an argument to the Statistics component
+                        cloudCoverage={this.state.cloudCoverage} //pass the cloudcoverage as an argument to the Statistics component
                     />
 
                     <SunTimes //render the SunTimes component
