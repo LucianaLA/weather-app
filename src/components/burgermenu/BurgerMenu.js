@@ -11,7 +11,7 @@ function BurgerMenu({ onLocationSearch, onCurrentLocation }) {
                     class={style.lens} onClick={() => { onLocationSearch(document.getElementById("locationSearch").value); document.getElementById("locationSearch").value = ""; }}
                 /> {/* when clicked, the search bar value is sent to the onLocationSearch function which searches the location */}
             </div>
-            <button class={style.locationsearch} onClick={() => { navigator.geolocation.getCurrentPosition((position) => { position.coords.latitude; position.coords.longitude; onCurrentLocation(position.coords.latitude, position.coords.longitude); }); }}>Current Location</button>
+            <button class={style.getcurrentloc} onClick={() => { navigator.geolocation.getCurrentPosition((position) => { position.coords.latitude; position.coords.longitude; onCurrentLocation(position.coords.latitude, position.coords.longitude); }); }}>Current Location</button>
         </div>
     )
 }
