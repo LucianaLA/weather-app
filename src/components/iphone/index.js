@@ -6,14 +6,11 @@ import style_iphone from '../button/style_iphone';
 import HourlyForecast from '../hourlyforecast/HourlyForecast';
 import Statistics from '../statistics/Statistics';
 import SunTimes from '../sunttimes/SunTimes';
-
-
 import WeatherNow from '../weathernow/WeatherNow';
 import BestTimeWalk from '../besttimewalk/BestTimeWalk';
 import Ground from '../ground/Ground';
 import TopLevel from '../toplevel/TopLevel';
 import PetTemperature from '../pettemperature/PetTemperature';
-import ImageChange from '../imagechange/ImageChange';
 
 export default class Iphone extends Component {
     constructor(props) {
@@ -382,17 +379,18 @@ export default class Iphone extends Component {
                         forecast={forecast} //pass the forecast as an argument to the HourlyForecast component
                     />
 
-                <Statistics //render the Statistics component
-                    temperature={temperature}  //pass the temperature as an argument to the Statistics component
-                    windspeed={this.state.windspeed} //pass the windspeed as an argument to the Statistics component
-                    humidity={this.state.humidity} //pass the humidity as an argument to the Statistics component
-                    cloudCoverage={this.state.cloudCoverage} //pass the cloudcoverage as an argument to the Statistics component
-                />
+                    <Statistics //render the Statistics component
+                        temperature={temperature}  //pass the temperature as an argument to the Statistics component
+                        windspeed={this.state.windspeed} //pass the windspeed as an argument to the Statistics component
+                        humidity={this.state.humidity} //pass the humidity as an argument to the Statistics component
+                        cloudCoverage={this.state.cloudCoverage} //pass the cloudcoverage as an argument to the Statistics component
+                    />
 
-                <SunTimes //render the SunTimes component
-                    sunsetDate={this.state.sunsetDate} //pass the sunsetDate as an argument to the SunTimes component
-                    sunriseDate={this.state.sunriseDate} //pass the sunriseDate as an argument to the SunTimes component
-                />
+                    <SunTimes //render the SunTimes component
+                        sunsetDate={this.state.sunsetDate} //pass the sunsetDate as an argument to the SunTimes component
+                        sunriseDate={this.state.sunriseDate} //pass the sunriseDate as an argument to the SunTimes component
+                    />
+                </div>
             </div>
         );
     }
