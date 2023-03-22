@@ -172,7 +172,7 @@ export default class Iphone extends Component {
             console.log("current time: " + item.time + " with a score of " + score)
         });
         console.log("Best time to walk: " + bestTime + " with a score of " + bestScore)
-        this.setState({bestTime});
+        this.setState({ bestTime });
         return bestTime;
     }
 
@@ -200,7 +200,7 @@ export default class Iphone extends Component {
         });
         this.setState({ groundDryTime });
         return groundDryTime;
-    
+
     }
 
     //search for location
@@ -353,46 +353,44 @@ export default class Iphone extends Component {
 
         // display all weather data
         return (
-            <div class={style.container}>
-                <div class={style_iphone.container}>
-                    <div class={style.backdrop}>
-                        <TopLevel //render the top level component
-                            location={location} //pass the location as an argument to the TopLevel component
-                            searchLocation={this.searchLocation} //pass the searchLocation function as an argument to the TopLevel component
-                            locationButton={this.locationButton} //pass the locationButton function as an argument to the TopLevel component
-                        />
-                        <WeatherNow //render the WeatherNow component
-                            capitalizeWords={capitalizeWords} //pass the capitalizeWords function as an argument to the WeatherNow component
-                            temperature={this.state.temperature} //pass the temperature as an argument to the WeatherNow component
-                            description={this.state.description} //pass the description as an argument to the WeatherNow component
-                        />
-                        <BestTimeWalk //render the BestTimeWalk component
-                            bestTime={bestTime} //pass the bestTime as an argument to the BestTimeWalk component
-                        />
-                        <Ground //render the Ground component
-                            groundDryTime={groundDryTime} //pass the groundDryTime as an argument to the Ground component
-                        />
-                        <PetTemperature //render the PetTemperature component
-                            condition={this.state.condition} //pass the condition as an argument to the PetTemperature component
-                        />
-                    </div>
-                    <HourlyForecast //render the HourlyForecast component
-                        next5HourForecast={next5HourForecast} //pass the next5HourForecast as an argument to the HourlyForecast component
-                        forecast={forecast} //pass the forecast as an argument to the HourlyForecast component
+            <div class={style_iphone.container}>
+                <div class={style.backdrop}>
+                    <TopLevel //render the top level component
+                        location={location} //pass the location as an argument to the TopLevel component
+                        searchLocation={this.searchLocation} //pass the searchLocation function as an argument to the TopLevel component
+                        locationButton={this.locationButton} //pass the locationButton function as an argument to the TopLevel component
                     />
-
-                    <Statistics //render the Statistics component
-                        temperature={temperature}  //pass the temperature as an argument to the Statistics component
-                        windspeed={this.state.windspeed} //pass the windspeed as an argument to the Statistics component
-                        humidity={this.state.humidity} //pass the humidity as an argument to the Statistics component
-                        cloudCoverage={this.state.cloudCoverage} //pass the cloudcoverage as an argument to the Statistics component
+                    <WeatherNow //render the WeatherNow component
+                        capitalizeWords={capitalizeWords} //pass the capitalizeWords function as an argument to the WeatherNow component
+                        temperature={this.state.temperature} //pass the temperature as an argument to the WeatherNow component
+                        description={this.state.description} //pass the description as an argument to the WeatherNow component
                     />
-
-                    <SunTimes //render the SunTimes component
-                        sunsetDate={this.state.sunsetDate} //pass the sunsetDate as an argument to the SunTimes component
-                        sunriseDate={this.state.sunriseDate} //pass the sunriseDate as an argument to the SunTimes component
+                    <BestTimeWalk //render the BestTimeWalk component
+                        bestTime={bestTime} //pass the bestTime as an argument to the BestTimeWalk component
+                    />
+                    <Ground //render the Ground component
+                        groundDryTime={groundDryTime} //pass the groundDryTime as an argument to the Ground component
+                    />
+                    <PetTemperature //render the PetTemperature component
+                        condition={this.state.condition} //pass the condition as an argument to the PetTemperature component
                     />
                 </div>
+                <HourlyForecast //render the HourlyForecast component
+                    next5HourForecast={next5HourForecast} //pass the next5HourForecast as an argument to the HourlyForecast component
+                    forecast={forecast} //pass the forecast as an argument to the HourlyForecast component
+                />
+
+                <Statistics //render the Statistics component
+                    temperature={temperature}  //pass the temperature as an argument to the Statistics component
+                    windspeed={this.state.windspeed} //pass the windspeed as an argument to the Statistics component
+                    humidity={this.state.humidity} //pass the humidity as an argument to the Statistics component
+                    cloudCoverage={this.state.cloudCoverage} //pass the cloudcoverage as an argument to the Statistics component
+                />
+
+                <SunTimes //render the SunTimes component
+                    sunsetDate={this.state.sunsetDate} //pass the sunsetDate as an argument to the SunTimes component
+                    sunriseDate={this.state.sunriseDate} //pass the sunriseDate as an argument to the SunTimes component
+                />
             </div>
         );
     }

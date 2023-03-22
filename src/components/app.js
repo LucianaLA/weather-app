@@ -4,6 +4,7 @@ import { h, Component } from 'preact';
 // import required Components from 'components/'
 import Iphone from './iphone';
 import Ipad from './ipad';
+import style from '../iphone/style.less'
 
 export default class App extends Component {
 //var App = React.createClass({
@@ -35,7 +36,7 @@ export default class App extends Component {
 		} 
 		else {
 			return (
-				<div id="app">
+				<div id="app" class={style.container}> 
 					<Iphone/ >
 				</div>
 			);
