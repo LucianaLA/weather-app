@@ -1,5 +1,7 @@
 import {h, render, Component} from 'preact';
-import style from '../iphone/style.less';
+import style from './style.less';
+
+
 
 // this component is to display the best time to take a pet out for a walk
 function BestTimeWalk({bestTime}) {

@@ -1,6 +1,7 @@
 import { h, render, Component } from 'preact';
 import style from '../iphone/style.less';
 
+
 function WeatherNow({ temperature, description, capitalizeWords }) {
     return (
         <div class={style.currentweather}>

@@ -1,6 +1,7 @@
 import { h, render, Component } from 'preact';
 import style from '../iphone/style.less';
 
+
 function Statistics({ windspeed, humidity, cloudcoverage }) {
     return (
         <div class={style.windhumidcloud}>

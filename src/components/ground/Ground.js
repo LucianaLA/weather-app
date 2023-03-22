@@ -1,6 +1,7 @@
 import {h, render, Component} from 'preact';
 import style from '../iphone/style.less';
 
+
 function Ground({groundDryTime}) { // this component displays the time until the ground is dry or if it's dry now
     return (
         <div class={style.weatherlater}>

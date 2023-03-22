@@ -2,6 +2,7 @@
 import { h, render, Component, Fragment } from 'preact';
 import style from '../iphone/style.less';
 
+
 function PetTemperature({ condition }) {
 
       // check the condition and displays the correct image

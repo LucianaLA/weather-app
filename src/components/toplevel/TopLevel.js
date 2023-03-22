@@ -1,5 +1,6 @@
 import { h, render, Component } from 'preact';
 import style from '../iphone/style.less';
+
 import BurgerMenu from '../burgermenu/BurgerMenu';
 
 function TopLevel({ location, searchLocation, locationButton }) { 
