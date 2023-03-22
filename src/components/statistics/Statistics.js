@@ -1,5 +1,5 @@
 import { h, render, Component } from 'preact';
-import style from '../iphone/style.less';
+import style from './style.less';
 
 
 function Statistics({ windspeed, humidity, cloudCoverage }) {
@@ -8,7 +8,7 @@ function Statistics({ windspeed, humidity, cloudCoverage }) {
             <div class={style.windhumidcloudicons}>
                 <img // wind icon
                     src="../../assets/icons/wind.png"
-                    class={style.iconswind} /> 
+                    class={style.iconswind} />
                 <img // humidity icon
                     src="../../assets/icons/humidity.png"
                     class={style.iconhumidity} />
@@ -17,10 +17,9 @@ function Statistics({ windspeed, humidity, cloudCoverage }) {
                     class={style.iconhot} />
 
             </div>
-            <p class={style.windspeed}>Windspeed</p>
-            <p class={style.humidity}>Humidity</p>
-
-            <p class={style.cloudcover}>Cloud</p>
+            <p class={style.windspeed}>Windspeed</p> {/* windspeed */}
+            <p class={style.humidity}>Humidity</p> {/* humidity */}
+            <p class={style.cloudcover}>Cloud</p> {/* cloud coverage */}
 
             <div class={style.stats}>
 

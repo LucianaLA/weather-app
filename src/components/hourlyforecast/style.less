@@ -1,57 +1,184 @@
+///////////current weather block
+.currentweather {
+	display: block;
+	background-color: #1CA5C2;
+	width: 100%;
+}
+
+.temperaturenow {
+	color: rgba(255, 255, 255, 1);
+	font-size: 400%;
+	line-height: 100%;
+	font-family: Inter, sans-serif;
+	font-weight: 400;
+}
+
+.weathertype {
+	color: rgba(255, 255, 255, 1);
+	font-size: 200%;
+	line-height: 100%;
+	font-family: Inter, sans-serif;
+	font-weight: 400;
+	padding-left: 10%;
+}
+
+.stateweather {
+	color: rgba(255, 255, 255, 1);
+	font-size: 16px;
+	line-height: 16px;
+	font-family: Inter, sans-serif;
+	font-weight: 400;
+	opacity: 0.8;
+	display: block;
+}
+
+//////////time for walking recommendation
+.walkrecommendation {
+	float: right;
+	background-color: #1CA5C2;
+	width: 40%;
+	height: 80px;
+	margin-top: 15px;
+}
+
+.walktext {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	color: rgba(255, 255, 255, 1);
+	font-size: 105%;
+	line-height: 16px;
+	font-family: Inter, sans-serif;
+	font-weight: 400;
+	text-align: center;
+	margin-top: 3%
+}
+
+.besttime {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	color: rgba(255, 255, 255, 1);
+	font-size: 20px;
+	line-height: 20px;
+	font-family: Inter, sans-serif;
+	font-weight: 400;
+	text-align: center;
+	margin-top: 5%
+}
+
+//////////ground state
+
+.weatherlater {
+	float: right;
+	background-color: #1CA5C2;
+	width: 40%;
+	height: 15%;
+	margin-top: 5%;
+	margin-left: 50%
+}
+
+.iconweatherlater {
+	width: 22%;
+	padding-top: 20%;
+	padding-left: 5px;
+	float: left;
+	margin-right: 3%;
+}
+
+.groundstate {
+	margin-left: 1%;
+	display: block;
+	margin-top: 20px;
+	color: white;
+	font-size: 15px !important;
+}
+
+.groundstatetxt{
+	font-size: 115%;
+}
+
+//////////////pet drawing////////
+
+.iconpetgraphic {
+	display: flex;
+	top: 2em;
+	bottom: 0%;
+	position: relative;
+	left: 15%
+}
+
+// .iconcloud {
+// 	display: inline;
+// 	bottom: 0%;
+// 	position: relative;
+// }
+
+// .iconcloud1 {
+// 	display: inline;
+// 	bottom: 30%;
+// 	position: relative;
+// 	z-index: 1;
+// }
+
+.petdrawing {
+	left: 5%;
+	bottom: 15%;
+	position: relative !important;
+}
+
+//////// Hourlyish weather
+
 .hourlyweather {
-    display: block;
-    color: white;
-    position: relative;
-    bottom: 35%;
-    width: 100%;
-    text-align: center;
-    // text-align-last: justify;
-    margin-left: 5%;
-    margin-right: 5%;
-    margin-bottom: 5%;
+	display: block;
+	color: white;
+	position: relative;
+	bottom: 35%;
+	width: 100%;
+	text-align: center;
+	// text-align-last: justify;
+	margin-left: 5%;
+	margin-right: 5%;
+	margin-bottom: 5%;
 }
 
-.hourlyweathericons {
-    width: 35%;
-}
-
-.hourlydiv {
-    width: 100%;
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-}
-
-.hourdiv2 {
-    display: inline-flex;
-    align-items: center;
-}
-
-.hourweathericons {
-    width: 35%;
-}
-
-.hourlyline {
-    width: 90%;
-    right: 5%;
-    bottom: 3%;
-    position: relative;
-}
-
-.hours {
-    display: block;
-    text-align-last: justify;
-    font-size: 14px;
-    width: 90%;
+.timeweather {
+	display: block;
+	text-align-last: justify;
+	font-size: 14px;
+	width: 90%;
 }
 
 .hourdiv2 img.hourweathericons {
-    padding-bottom: 0%;
+	padding-bottom: 0%;
 }
 
-.petdrawing {
-    left: 5%;
-    bottom: 15%;
-    position: relative !important;
+.hourlydiv {
+	width: 100%;
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: space-between;
 }
 
+.hourdiv2 {
+	display: inline-flex;
+	align-items: center;
+}
+
+.hourweathericons {
+	width: 35%;
+}
+
+.hourlyline {
+	width: 90%;
+	right: 5%;
+	bottom: 3%;
+	position: relative;
+}
+
+.hours {
+	display: block;
+	text-align-last: justify;
+	font-size: 15px;
+	width: 90%;
+}

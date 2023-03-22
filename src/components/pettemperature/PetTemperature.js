@@ -1,6 +1,6 @@
 
 import { h, render, Component, Fragment } from 'preact';
-import style from '../iphone/style.less';
+import style from './style.less';
 
 
 function PetTemperature({ condition }) {

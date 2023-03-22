@@ -1,4 +1,4 @@
-import style from '../iphone/style.less';
+import style from './style.less';
  // import style 
 import { h, render, Component } from 'preact';
 

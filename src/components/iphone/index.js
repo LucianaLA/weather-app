@@ -13,6 +13,7 @@ import BestTimeWalk from '../besttimewalk/BestTimeWalk';
 import Ground from '../ground/Ground';
 import TopLevel from '../toplevel/TopLevel';
 import PetTemperature from '../pettemperature/PetTemperature';
+import ImageChange from '../imagechange/ImageChange';
 
 export default class Iphone extends Component {
     constructor(props) {
@@ -33,7 +34,7 @@ export default class Iphone extends Component {
             main: '',
             bestTime: '',
             groundDryTime: '',
-            forecast: []
+            forecast: [],
         };
         this.findBestWalkingTime = this.findBestWalkingTime.bind(this);
         this.estimateGroundDryTime = this.estimateGroundDryTime.bind(this);
@@ -374,12 +375,15 @@ export default class Iphone extends Component {
                         />
                         <PetTemperature //render the PetTemperature component
                             condition={this.state.condition} //pass the condition as an argument to the PetTemperature component
+                            temperature={this.state.temperature} //pass the temperature as an argument to the PetTemperature component
+                            currentImage={this.state.currentImage} //pass the currentImage as an argument to the PetTemperature component
                         />
                     </div>
                     <HourlyForecast //render the HourlyForecast component
                         next5HourForecast={next5HourForecast} //pass the next5HourForecast as an argument to the HourlyForecast component
                         forecast={forecast} //pass the forecast as an argument to the HourlyForecast component
                     />
+
 
                     <Statistics //render the Statistics component
                         temperature={temperature}  //pass the temperature as an argument to the Statistics component
