@@ -17,7 +17,7 @@ function TopLevel({ location, searchLocation, locationButton }) {
                 />
             </div>
             <img
-                src="../../assets/icons/location-icon.png" z
+                src="../../assets/icons/location-icon.png" 
                 class={style.iconlocation} // location icon
             />
             <span
