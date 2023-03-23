@@ -202,9 +202,6 @@ export default class Iphone extends Component {
     }
 
     //search for location
-
-
-
     searchLocation = (location) => {
         const url = `http://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;
         const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?q=${location}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;
@@ -267,7 +264,7 @@ export default class Iphone extends Component {
             })
             .catch(error => console.error(error));
     }
-
+    
     locationButton = (latitude, longitude) => { //get the location of the user
         const url = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;
         const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=metric&APPID=dc37c5591be4ed3805a183e79e4e2d43`;
